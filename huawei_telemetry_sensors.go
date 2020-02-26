@@ -88,6 +88,7 @@ func GetMessageType(path string) (proto.Message) {
 
 */
 func CreateMetrics(grouper *metric.SeriesGrouper, tags map[string]string, timestamp time.Time, path string, subfield string)  string{
+  name := strings.Replace(subfield,"\"", "",-1)
   grouper.Add(path, tags, timestamp, subfield, tags[subfield])
   return "Metica - " + subfield+":"+tags[subfield]
 }
