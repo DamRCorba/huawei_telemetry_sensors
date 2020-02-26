@@ -1,0 +1,58 @@
+syntax = "proto3";                           //The .proto file version is defined as v3.
+package telemetry;                          //The package name is telemetry.
+message Telemetry {                         //Telemetry message structure definition.
+   string node_id_str = 1;                     //Device name.
+   string subscription_id_str = 2;             //Subscription name during static subscription configuration, whose index is 2 during GPB encoding.
+   string sensor_path = 3;                     //Subscription path, whose index is 3 during GPB encoding.
+   uint64 collection_id = 4;                   //Sampling round, whose index is 4 during GPB encoding.
+   uint64 collection_start_time = 5;           //Start time of a sampling round, whose index is 5 during GPB encoding.
+   uint64 msg_timestamp = 6;                   //Timestamp when the current message is generated, whose index is 6 during GPB encoding.
+   TelemetryGPBTable data_gpb = 7;             //Indicates that the data carried is defined in TelemetryGPBTable. The index is 7 during GPB encoding.
+   uint64 collection_end_time = 8;                   //End time of a sampling round, whose index is 8 during GPB encoding.
+   uint32 current_period = 9;                  //Sampling precision, in milliseconds, whose index is 9 during GPB encoding.
+   string except_desc = 10;        //Exception description, whose index is 10 during GPB encoding. It is used to report exception information when a sampling exception occurs.
+   string product_name = 11;       //Product name.
+   enum Encoding {
+    Encoding_GPB = 0;        //GPB encoding format.
+    Encoding_JSON = 1;       //JSON encoding format.
+  };
+  Encoding encoding =12;    //Data encoding format. If the GPB encoding format is used, the data_gpb field is valid. Otherwise, the data_str field is valid.
+  string data_str = 14;   //This field is valid only when a non-GPB encoding format is used.
+}
+message TelemetryGPBTable {                 //TelemetryGPBTable message structure definition.
+  repeated TelemetryRowGPB row = 1;           //Array definition, whose index is 1 during GPB encoding. Its member is TelemetryRowGPB structure.
+}
+message TelemetryRowGPB {
+uint64 timestamp = 1;                       //Timestamp of the current sampling instance, whose index is 1 during GPB encoding.
+bytes content = 11;                         //Sampling instance data carried, whose index is 11 during GPB encoding. The sensor_path field must be considered to determine which .proto file is used for encoding.
+}
+message TelemetrySelfDefinedEvent {
+  string path = 1;         //Sampling path that triggers the customized event, which describes the method of parsing the content.
+  uint32 level = 2;        //Level of the user-defined event.
+  string description = 3;  //Description of the user-defined event.
+  string fieldName = 4; //Name of the field that triggers the customized event.
+  uint32 fieldValue = 5;   //Value of the field that triggers the customized event.
+  TelemetrySelfDefineThresTable data_threshold = 6; //Threshold filter criteria when the customized event is triggered.
+  enum ThresholdRelation {
+      ThresholdRelation_INVALID = 0; //The relationship between thresholds is not configured.
+      ThresholdRelation_AND = 1; //The relationship between thresholds is And.
+      ThresholdRelation_OR = 2; //The relationship between thresholds is Or.
+  }
+  ThresholdRelation thresholdRelation = 7; //Relationship between threshold filter criteria when the customized event is triggered.
+  bytes content = 8; //Sampled data that triggers the customized event.
+}
+message TelemetrySelfDefineThresTable {
+  repeated TelemetryThreshold row = 1; //Multiple thresholds are included.
+}
+message TelemetryThreshold {
+  uint32 thresholdValue = 1; //Delivered threshold.
+  enum ThresholdOpType {
+      ThresholdOpType_EQ = 0; //The actual value in the data sent equals to the configured data threshold.
+      ThresholdOpType_GT = 1; //The actual value in the data sent is greater than the configured data threshold.
+      ThresholdOpType_GE = 2; //The actual value in the data sent is greater than or equals to the configured data threshold.
+      ThresholdOpType_LT = 3; //The actual value in the data sent is less than the configured data threshold.
+      ThresholdOpType_LE = 4; //The actual value in the data sent is less than or equals to the configured data threshold.
+  }
+  ThresholdOpType thresholdOpType = 2; //Threshold on the device.
+
+}
