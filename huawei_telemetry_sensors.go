@@ -5,20 +5,20 @@ import(
       "time"
       "strings"
       "unicode"
-      "telemetry"          // path to huawei-telemetry.proto
-      "huawei_bfd"         // path to huawei-bfd.proto
-      "huawei_bgp"         // path to huawei-bgp.proto
-      "huawei_devm"        // path to huawei-devm.proto
-      "huawei_driver"      // path to huawei-driver.proto
-      "huawei_ifm"         // path to huawei-ifm.proto
-      "huawei_isis"        // path to huawei-isis.proto
-      "huawei_mpls"        // path to huawei-mpls.proto
-      "huawei_ospfv2"      // path to huawei-ospfv2.proto
-      "huawei_ospfv3"      // path to huawei-ospfv3.proto
-      "huawei_qos"         // path to huawei-qos.proto
-      "huawei_sem"         // path to huawei-sem.proto
-      "huawei_telemEmdi"   // path to huawei-TelemEmdi.proto
-      "huawei_trafficmng"  // path to huawei-trafficmng.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-telemetry"  //"telemetry"          // path to huawei-telemetry.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-bfd"        //"huawei_bfd"         // path to huawei-bfd.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-bgp"        //"huawei_bgp"         // path to huawei-bgp.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-devm"       //"huawei_devm"        // path to huawei-devm.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-driver"     //"huawei_driver"      // path to huawei-driver.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-ifm"        //"huawei_ifm"         // path to huawei-ifm.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-isis"       //"huawei_isis"        // path to huawei-isis.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-mpls"       //"huawei_mpls"        // path to huawei-mpls.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-ospfv2"     //"huawei_ospfv2"      // path to huawei-ospfv2.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-ospfv3"     //"huawei_ospfv3"      // path to huawei-ospfv3.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-qos"        //"huawei_qos"         // path to huawei-qos.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-sem"        //"huawei_sem"         // path to huawei-sem.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-telemEmdi"  //"huawei_telemEmdi"   // path to huawei-TelemEmdi.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-trafficmng" //"huawei_trafficmng"  // path to huawei-trafficmng.proto
       "github.com/golang/protobuf/proto"
       "github.com/influxdata/telegraf/metric"
   )
