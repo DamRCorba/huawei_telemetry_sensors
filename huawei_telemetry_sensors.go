@@ -5,6 +5,7 @@ import(
       "time"
       "strings"
       "unicode"
+      "strconv"
       "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-telemetry"  //"telemetry"          // path to huawei-telemetry.proto
       "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-bfd"        //"huawei_bfd"         // path to huawei-bfd.proto
       "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-bgp"        //"huawei_bgp"         // path to huawei-bgp.proto
