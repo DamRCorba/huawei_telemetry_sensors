@@ -287,6 +287,11 @@ func AppendTags(k string, v string, tags map[string]string, path string) map[str
     if reflect.TypeOf(decodeVal(endPointTypes[k], v)) == reflect.TypeOf("") {
       resolve[k] = v
     }
+  } else {
+    if k == "ifName" {
+      resolve[k] = v
+    }
+
   }
   return resolve
 }
