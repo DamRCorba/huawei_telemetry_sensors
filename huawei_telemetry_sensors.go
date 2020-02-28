@@ -77,6 +77,246 @@ func GetMessageType(path string) (proto.Message) {
     return &huawei_devm.Devm{}
 }
 
+
+
+/*
+  Get the types of the Telemetry EndPoint
+  @Params: a string with the telemetry complete path
+  @Returns: a Map with keys and types of the endpoint
+*/
+func GetTypeValue (path string) map[string]reflect.Type {
+  resolve := make(map[string]reflect.Type)
+  splited := strings.Split(path,":")
+  switch splited[0] {
+  case "huawei-bfd":
+
+      return resolve
+
+  case "huawei-bgp":
+    return resolve
+
+  case "huawei-devm":
+    switch splited[1] {
+    case "devm/cpuInfos/cpuInfo":
+          fooType := reflect.TypeOf(huawei_devm.Devm_CpuInfos_CpuInfo{})
+          for i := 0; i < fooType.NumField(); i ++ {
+            keys := fooType.Field(i)
+            resolve[LcFirst(keys.Name)] = keys.Type
+            }
+        break;
+    case "devm/fans/fan":
+      fooType := reflect.TypeOf(huawei_devm.Devm_Fans_Fan{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    case "devm/memoryInfos/memoryInfo":
+      fooType := reflect.TypeOf(huawei_devm.Devm_MemoryInfos_MemoryInfo{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    case "devm/ports/port":
+      fooType := reflect.TypeOf(huawei_devm.Devm_Ports_Port{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    case "devm/ports/port/opticalInfo":
+      fooType := reflect.TypeOf(huawei_devm.Devm_Ports_Port_OpticalInfo{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    case "devm/powerSupplys/powerSupply/powerEnvironments/powerEnvironment":
+      fooType := reflect.TypeOf(huawei_devm.Devm_PowerSupplys_PowerSupply_PowerEnvironments_PowerEnvironment{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    case "devm/temperatureInfos/temperatureInfo":
+      fooType := reflect.TypeOf(huawei_devm.Devm_TemperatureInfos_TemperatureInfo{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    }
+
+    return resolve
+
+  case "huawei-driver":
+    return resolve
+
+  case "huawei-ifm":
+    switch splited[1] {
+    case "ifm/interfaces/interface":
+      fooType := reflect.TypeOf(huawei_ifm.Ifm_Interfaces_Interface{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    case "ifm/interfaces/interface/ifClearedStat":
+      fooType := reflect.TypeOf(huawei_ifm.Ifm_Interfaces_Interface_IfClearedStat{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    case "ifm/interfaces/interface/ifDynamicInfo":
+      fooType := reflect.TypeOf(huawei_ifm.Ifm_Interfaces_Interface_IfDynamicInfo{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    case "ifm/interfaces/interface/ifStatistics":
+      fooType := reflect.TypeOf(huawei_ifm.Ifm_Interfaces_Interface_IfStatistics{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    case "ifm/interfaces/interface/ifStatistics/ethPortErrSts":
+      fooType := reflect.TypeOf(huawei_ifm.Ifm_Interfaces_Interface_IfStatistics_EthPortErrSts{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    }
+    return resolve
+
+  case "huawei-isis":
+    return resolve
+
+  case "huawei-mpls":
+    return resolve
+
+  case "huawei-ospfv2":
+    return resolve
+
+  case "huawei-ospfv3":
+    return resolve
+
+  case "huawei-qos":
+    switch splited[1] {
+    case "qos/qosBuffers/qosBuffer":
+      fooType := reflect.TypeOf(huawei_qos.Qos_QosBuffers_QosBuffer{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    case "qos/qosIfQoss/qosIfQos/qosPolicyApplys/qosPolicyApply/qosPolicyStats/qosPolicyStat/qosRuleStats/qosRuleStat":
+      fooType := reflect.TypeOf(huawei_qos.Qos_QosIfQoss_QosIfQos_QosPolicyApplys_QosPolicyApply_QosPolicyStats_QosPolicyStat_QosRuleStats_QosRuleStat{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    case "qos/qosPortQueueStatInfos/qosPortQueueStatInfo":
+      fooType := reflect.TypeOf(huawei_qos.Qos_QosPortQueueStatInfos_QosPortQueueStatInfo{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    }
+    return resolve
+
+  case "huawei-sem":
+    return resolve
+
+  case "huawei-telmEmdi":
+  case "huawei-emdi":
+    return resolve
+
+  case "huawei-trafficmng":
+    return resolve
+
+  default:
+    fmt.Println("Error Sensor Desconocido")
+    return resolve
+  }
+ return resolve
+}
+
+/*
+  Change the firts character of a string to Lowercase
+*/
+func LcFirst(str string) string {
+    for i, v := range str {
+        return string(unicode.ToLower(v)) + str[i+1:]
+    }
+    return ""
+}
+
+/*
+  Change the firts character of a string to Uppercase
+*/
+func UcFirst(str string) string {
+    for i, v := range str {
+        return string(unicode.ToUpper(v)) + str[i+1:]
+    }
+    return ""
+}
+
+/*
+  Append to the tags the telemetry values for position.
+  @params:
+  k - Key to evaluate
+  v - Content of the Key
+  tags - Global tags of the metric
+  path - Telemetry path
+  @returns
+  original tag append the key if its a name Key.
+
+*/
+func AppendTags(k string, v string, tags map[string]string, path string) map[string]string {
+  resolve := tags
+  endPointTypes:=GetTypeValue(path)
+  if endPointTypes[k] != nil {
+    if reflect.TypeOf(decodeVal(endPointTypes[k], v)) == reflect.TypeOf("") {
+      resolve[k] = v
+    }
+  }
+  return resolve
+}
+
+/*
+  Convert the telemetry Data to its type.
+  @Params:
+  tipo - telemetry path data type
+  val - string value
+  Returns the converted value
+*/
+func decodeVal(tipo interface{}, val string) interface{} {
+  if tipo == nil {
+    return val
+  } else {
+  value := reflect.New(tipo.(reflect.Type)).Elem().Interface()
+  switch value.(type) {
+  case uint32: resolve, _ := strconv.ParseUint(val,10,32);
+                //fmt.Println("uint32 selected", resolve, da)
+                return resolve;
+  case uint64: resolve,_ :=  strconv.ParseUint(val,10,64); return resolve;
+  case int32: resolve,_ :=  strconv.ParseInt(val,10,32); return resolve;
+  case int64: resolve,_ :=  strconv.ParseInt(val,10,64); return resolve;
+  case float64: resolve,_ :=  strconv.ParseFloat(val,64); return resolve;
+  case bool: resolve,_ :=  strconv.ParseBool(val); return resolve;
+  }
+  }
+  resolve := val;
+  return resolve;
+}
+
 /*
   Creates and add metrics from json mapped data in telegraf metrics SeriesGrouper
   @params:
@@ -85,12 +325,13 @@ func GetMessageType(path string) (proto.Message) {
   - timestamp (time.Time) -
   - path (string) - sensor path
   - subfield (string) - subkey data.
+    vals (string) - subkey content
 
 */
-func CreateMetrics(grouper *metric.SeriesGrouper, tags map[string]string, timestamp time.Time, path string, subfield string)  string{
-  name := strings.Replace(subfield,"\"", "",-1)
-  grouper.Add(path, tags, timestamp, subfield, tags[subfield])
-  return "Metica - " + subfield+":"+tags[subfield]
+func CreateMetrics(grouper *metric.SeriesGrouper, tags map[string]string, timestamp time.Time, path string, subfield string, vals string)  {
+  name:= strings.Replace(subfield,"\"","",-1)
+  endPointTypes:=GetTypeValue(path)
+  grouper.Add(path, tags, timestamp, string(name), decodeVal(endPointTypes[name], vals))
 }
 
 /*
@@ -109,6 +350,7 @@ func SearchKey(Message *telemetry.TelemetryRowGPB, sensorType string)  ([]string
     panic(err)
   }
   primero := reflect.ValueOf(sensorMsg).Interface()
+  fmt.Println(reflect.TypeOf(primero))
   str := fmt.Sprintf("%v", primero)
   // format string to JsonString with some modifications.
   jsonString := strings.Replace(str,"<>", "NoStats",-1)
@@ -153,7 +395,8 @@ func SearchKey(Message *telemetry.TelemetryRowGPB, sensorType string)  ([]string
     var keys []string
     var vals []string
     for k, v := range m {
-        keys = append(keys, k)
+        name:= strings.Replace(k,"\"","",-1) // remove quotes
+        keys = append(keys, name)
         vals = append(vals, v)
 
     }
