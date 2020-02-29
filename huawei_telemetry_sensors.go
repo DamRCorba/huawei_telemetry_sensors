@@ -137,6 +137,7 @@ func GetTypeValue (path string) map[string]reflect.Type {
       fooType := reflect.TypeOf(huawei_devm.Devm_PowerSupplys_PowerSupply_PowerEnvironments_PowerEnvironment{})
       for i := 0; i < fooType.NumField(); i ++ {
         keys := fooType.Field(i)
+        if keys.Name != 
         resolve[LcFirst(keys.Name)] = keys.Type
         }
         break;
