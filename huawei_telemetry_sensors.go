@@ -130,21 +130,37 @@ func GetTypeValue (path string) map[string]reflect.Type {
       fooType := reflect.TypeOf(huawei_devm.Devm_Ports_Port_OpticalInfo{})
       for i := 0; i < fooType.NumField(); i ++ {
         keys := fooType.Field(i)
-        resolve[LcFirst(keys.Name)] = keys.Type
+        if keys.Name == "RxPower" || keys.Name == "TxPower" {
+          resolve[LcFirst(keys.Name)] = reflect.TypeOf(1.0)
+          } else {
+              resolve[LcFirst(keys.Name)] = keys.Type
+          }
         }
         break;
     case "devm/powerSupplys/powerSupply/powerEnvironments/powerEnvironment":
       fooType := reflect.TypeOf(huawei_devm.Devm_PowerSupplys_PowerSupply_PowerEnvironments_PowerEnvironment{})
       for i := 0; i < fooType.NumField(); i ++ {
         keys := fooType.Field(i)
-        resolve[LcFirst(keys.Name)] = keys.Type
+        if keys.Name == "PowerValue" || keys.Name == "VoltageValue" {
+            resolve[LcFirst(keys.Name)] = reflect.TypeOf(1.0)
+        } else {
+            if keys.Name == "PemIndex" {
+              resolve[LcFirst(keys.Name)] = reflect.TypeOf("")
+            } else {
+                resolve[LcFirst(keys.Name)] = keys.Type
+            }
+          }
         }
         break;
     case "devm/temperatureInfos/temperatureInfo":
       fooType := reflect.TypeOf(huawei_devm.Devm_TemperatureInfos_TemperatureInfo{})
       for i := 0; i < fooType.NumField(); i ++ {
         keys := fooType.Field(i)
-        resolve[LcFirst(keys.Name)] = keys.Type
+        if keys.Name == "I2c" || keys.Name == "Channel" {
+          resolve[LcFirst(keys.Name)] = reflect.TypeOf("")
+        } else {
+          resolve[LcFirst(keys.Name)] = keys.Type
+          }
         }
         break;
     }
@@ -288,7 +304,7 @@ func AppendTags(k string, v string, tags map[string]string, path string) map[str
       resolve[k] = v
     }
   } else {
-    if k == "ifName" {
+    if k == "ifName" || k == "position" || k == "pemIndex" || k == "i2c"{
       resolve[k] = v
     }
 
@@ -315,7 +331,12 @@ func decodeVal(tipo interface{}, val string) interface{} {
   case uint64: resolve,_ :=  strconv.ParseUint(val,10,64); return resolve;
   case int32: resolve,_ :=  strconv.ParseInt(val,10,32); return resolve;
   case int64: resolve,_ :=  strconv.ParseInt(val,10,64); return resolve;
-  case float64: resolve,_ :=  strconv.ParseFloat(val,64); return resolve;
+  case float64: resolve, err :=  strconv.ParseFloat(val,64);
+                if err != nil {
+                  name:= strings.Replace(val,"\"","",-1)
+                  resolve, _=  strconv.ParseFloat(name,64);
+                }
+                return resolve;
   case bool: resolve,_ :=  strconv.ParseBool(val); return resolve;
   }
   }
@@ -335,9 +356,11 @@ func decodeVal(tipo interface{}, val string) interface{} {
 
 */
 func CreateMetrics(grouper *metric.SeriesGrouper, tags map[string]string, timestamp time.Time, path string, subfield string, vals string)  {
-  name:= strings.Replace(subfield,"\"","",-1)
-  endPointTypes:=GetTypeValue(path)
-  grouper.Add(path, tags, timestamp, string(name), decodeVal(endPointTypes[name], vals))
+  if vals != "" && subfield != "ifName" && subfield != "position" && subfield != "pemIndex" && subfield != "address" && subfield != "i2c" && subfield != "channel" && subfield != "queueType" {
+    name:= strings.Replace(subfield,"\"","",-1)
+    endPointTypes:=GetTypeValue(path)
+    grouper.Add(path, tags, timestamp, string(name), decodeVal(endPointTypes[name], vals))
+  }
 }
 
 /*
