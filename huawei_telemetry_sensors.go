@@ -308,7 +308,9 @@ func AppendTags(k string, v string, tags map[string]string, path string) map[str
   endPointTypes:=GetTypeValue(path)
   if endPointTypes[k] != nil {
     if reflect.TypeOf(decodeVal(endPointTypes[k], v)) == reflect.TypeOf("") {
-      resolve[k] = v
+      if k != "ifAdminStatus" {
+          resolve[k] = v
+      }
     }
   } else {
     if k == "ifName" || k == "position" || k == "pemIndex" || k == "i2c"{
@@ -363,15 +365,15 @@ func decodeVal(tipo interface{}, val string) interface{} {
 
 */
 func CreateMetrics(grouper *metric.SeriesGrouper, tags map[string]string, timestamp time.Time, path string, subfield string, vals string)  {
-  if path == "huawei-ifm:ifm/interfaces/interface" {
-    if subfield == "ifAdminStatus" {
-      if vals == "IfAdminStatus_UP"
-        grouper.Add(path, tags, timestamp, string(name), 1)
+  if subfield == "ifAdminStatus" {
+    name:= strings.Replace(subfield,"\"","",-1)
+    if vals == "IfAdminStatus_UP" {
+      grouper.Add(path, tags, timestamp, string(name), 1)
     } else {
-        grouper.Add(path, tags, timestamp, string(name), 0)
+      grouper.Add(path, tags, timestamp, string(name), 0)
     }
   }
-  if vals != "" && subfield != "ifName" && subfield != "position" && subfield != "pemIndex" && subfield != "address" && subfield != "i2c" && subfield != "channel" && subfield != "queueType" {
+  if vals != "" && subfield != "ifName" && subfield != "position" && subfield != "pemIndex" && subfield != "address" && subfield != "i2c" && subfield != "channel" && subfield != "queueType" && subfield != "ifAdminStatus" {
     name:= strings.Replace(subfield,"\"","",-1)
     endPointTypes:=GetTypeValue(path)
     grouper.Add(path, tags, timestamp, string(name), decodeVal(endPointTypes[name], vals))
@@ -387,7 +389,8 @@ func CreateMetrics(grouper *metric.SeriesGrouper, tags map[string]string, timest
   - keys (string) - Keys of the fields
   - vals (string) - Vals of the fields
 */
-func SearchKey(Message *telemetry.TelemetryRowGPB, sensorType string)  ([]string, []string){
+func SearchKey(Message *telemetry.TelemetryRowGPB, path string)  ([]string, []string){
+  sensorType := strings.Split(path,":")[0]
   sensorMsg := GetMessageType(sensorType)
   err := proto.Unmarshal(Message.Content, sensorMsg)
   if (err != nil) {
@@ -408,9 +411,6 @@ func SearchKey(Message *telemetry.TelemetryRowGPB, sensorType string)  ([]string
   jsonString= strings.Replace(jsonString,"{"," ",-1)
   jsonString= strings.Replace(jsonString,"}","",-1)
   jsonString="\""+jsonString
-  fmt.Println("----------------jsonString-----------------")
-  fmt.Println(jsonString)
-  fmt.Println("----------------jsonString-----------------")
   lastQuote := rune(0)
       f := func(c rune) bool {
           switch {
@@ -447,5 +447,23 @@ func SearchKey(Message *telemetry.TelemetryRowGPB, sensorType string)  ([]string
 
     }
 
+    if path == "huawei-ifm:ifm/interfaces/interface" {
+      if Find(keys, "ifAdminStatus") == -1 {
+        keys = append(keys, "ifAdminStatus")
+        vals = append(vals, "IfAdminStatus_DOWN")
+      }
+    }
+
   return keys, vals
+}
+
+// Find returns the smallest index i at which x == a[i],
+// or len(a) if there is no such index.
+func Find(a []string, x string) int {
+    for i, n := range a {
+        if x == n {
+            return i
+        }
+    }
+    return -1
 }
