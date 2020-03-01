@@ -16,22 +16,22 @@ Type        MinPeriod(ms)  MaxEachPeriod  Path
 Sample(S)   10000          --             huawei-devm:devm/cpuInfos/cpuInfo - Probado Ok
 Sample(S)   300000         --             huawei-devm:devm/fans/fan - Ok
 Sample(S)   10000          --             huawei-devm:devm/memoryInfos/memoryInfo - Probado Ok
-Sample(S)   300000         --             huawei-devm:devm/ports/port - No se para que
+Sample(S)   300000         --             huawei-devm:devm/ports/port - Solo devuelve posicion y entIndex
 Sample(S)   300000         --             huawei-devm:devm/ports/port/opticalInfo - Probado Ok
 Sample(S)   300000         --             huawei-devm:devm/powerSupplys/powerSupply/powerEnvironments/powerEnvironment - Ok.
 Sample(S)   300000         --             huawei-devm:devm/temperatureInfos/temperatureInfo - Ok
-Sample(P)   300000         --             huawei-emdi:emdi/emdiTelemReps/emdiTelemRep - No se que mide
-Sample(P)   10000          --             huawei-emdi:emdi/emdiTelemRtps/emdiTelemRtp - No se que mide
-Sample(S)   10000          --             huawei-ifm:ifm/interfaces/interface - Deberia llamar a todos los valores
+Sample(P)   300000         --             huawei-emdi:emdi/emdiTelemReps/emdiTelemRep - No Implementado
+Sample(P)   10000          --             huawei-emdi:emdi/emdiTelemRtps/emdiTelemRtp - No Implementado
+Sample(S)   10000          --             huawei-ifm:ifm/interfaces/interface - Solo devuelve AdminStatus si la interface esta UP. Sino solo index
 Sample(P)   100            20             huawei-ifm:ifm/interfaces/interface/ifClearedStat - No Interesa
-Sample(S)   10000          --             huawei-ifm:ifm/interfaces/interface/ifDynamicInfo - No lo use
+Sample(S)   10000          --             huawei-ifm:ifm/interfaces/interface/ifDynamicInfo - Devuelve el estado operativo de la interfaz
 Sample(P)   100            20             huawei-ifm:ifm/interfaces/interface/ifStatistics - Probado ok
 Sample(P)   1000           20             huawei-ifm:ifm/interfaces/interface/ifStatistics/ethPortErrSts - OK
 Sample(S)   10000          --             huawei-mpls:mpls/mplsTe/rsvpTeTunnels/rsvpTeTunnel/tunnelPaths/tunnelPath - No hay RSVP
 Sample(P)   1000           200            huawei-qos:qos/qosBuffers/qosBuffer
 Sample(P)   100            20             huawei-qos:qos/qosIfQoss/qosIfQos/qosPolicyApplys/qosPolicyApply/qosPolicyStats/qosPolicyStat/qosRuleStats/qosRuleStat
 Sample(P)   1000           10             huawei-qos:qos/qosPortQueueStatInfos/qosPortQueueStatInfo - Probado Ok
-Sample(S)   300000         --             huawei-trafficmng:trafficmng/tmSlotSFUs/tmSlotSFU/sfuStatisticss/sfuStatistics
+Sample(S)   300000         --             huawei-trafficmng:trafficmng/tmSlotSFUs/tmSlotSFU/sfuStatisticss/sfuStatistics No Implementado
 ------------------------------------------------------------------------------------------------------------------
 
 ```

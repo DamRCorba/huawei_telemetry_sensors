@@ -127,7 +127,12 @@ func GetTypeValue (path string) map[string]reflect.Type {
         }
         break;
     case "devm/ports/port/opticalInfo":
-      fooType := reflect.TypeOf(huawei_devm.Devm_Ports_Port_OpticalInfo{})
+      fooType := reflect.TypeOf(huawei_devm.Devm_Ports_Port{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+      fooType = reflect.TypeOf(huawei_devm.Devm_Ports_Port_OpticalInfo{})
       for i := 0; i < fooType.NumField(); i ++ {
         keys := fooType.Field(i)
         if keys.Name == "RxPower" || keys.Name == "TxPower" {
@@ -334,12 +339,10 @@ func decodeVal(tipo interface{}, val string) interface{} {
   } else {
   value := reflect.New(tipo.(reflect.Type)).Elem().Interface()
   switch value.(type) {
-  case uint32: resolve, _ := strconv.ParseUint(val,10,32);
-                //fmt.Println("uint32 selected", resolve, da)
-                return resolve;
+  case uint32: resolve, _ := strconv.ParseUint(val,10,32); return resolve;
   case uint64: resolve,_ :=  strconv.ParseUint(val,10,64); return resolve;
-  case int32: resolve,_ :=  strconv.ParseInt(val,10,32); return resolve;
-  case int64: resolve,_ :=  strconv.ParseInt(val,10,64); return resolve;
+  case int32: resolve,_ :=  strconv.ParseInt(val,10,32);   return resolve;
+  case int64: resolve,_ :=  strconv.ParseInt(val,10,64);   return resolve;
   case float64: resolve, err :=  strconv.ParseFloat(val,64);
                 if err != nil {
                   name:= strings.Replace(val,"\"","",-1)
@@ -373,7 +376,16 @@ func CreateMetrics(grouper *metric.SeriesGrouper, tags map[string]string, timest
       grouper.Add(path, tags, timestamp, string(name), 0)
     }
   }
-  if vals != "" && subfield != "ifName" && subfield != "position" && subfield != "pemIndex" && subfield != "address" && subfield != "i2c" && subfield != "channel" && subfield != "queueType" && subfield != "ifAdminStatus" {
+  if subfield == "ifOperStatus" {
+    name:= strings.Replace(subfield,"\"","",-1)
+    if vals == "IfOperStatus_UP" {
+      grouper.Add(path, tags, timestamp, string(name), 1)
+    } else {
+      grouper.Add(path, tags, timestamp, string(name), 0)
+    }
+  }
+  if vals != "" && subfield != "ifName" && subfield != "position" && subfield != "pemIndex" && subfield != "address" && subfield != "i2c" && subfield != "channel" &&
+  subfield != "queueType" && subfield != "ifAdminStatus" && subfield != "ifOperStatus" {
     name:= strings.Replace(subfield,"\"","",-1)
     endPointTypes:=GetTypeValue(path)
     grouper.Add(path, tags, timestamp, string(name), decodeVal(endPointTypes[name], vals))
@@ -397,10 +409,10 @@ func SearchKey(Message *telemetry.TelemetryRowGPB, path string)  ([]string, []st
     panic(err)
   }
   primero := reflect.ValueOf(sensorMsg).Interface()
-  fmt.Println(reflect.TypeOf(primero))
+
   str := fmt.Sprintf("%v", primero)
   // format string to JsonString with some modifications.
-  jsonString := strings.Replace(str,"<>", "NoStats",-1)
+  jsonString := strings.Replace(str,"<>", "0",-1)
   jsonString = strings.Replace(jsonString,"<", "{\"",-1)
   jsonString= strings.Replace(jsonString,">", "\"}",-1)
   jsonString= strings.Replace(jsonString," ", ",\"",-1)
@@ -411,6 +423,9 @@ func SearchKey(Message *telemetry.TelemetryRowGPB, path string)  ([]string, []st
   jsonString= strings.Replace(jsonString,"{"," ",-1)
   jsonString= strings.Replace(jsonString,"}","",-1)
   jsonString="\""+jsonString
+  if path == "huawei-ifm:ifm/interfaces/interface/ifDynamicInfo" { // caso particular....
+    jsonString= strings.Replace(jsonString,"IfOperStatus_UPifName\"","IfOperStatus_UP \"ifName\"",-1)
+  }
   lastQuote := rune(0)
       f := func(c rune) bool {
           switch {
@@ -446,19 +461,29 @@ func SearchKey(Message *telemetry.TelemetryRowGPB, path string)  ([]string, []st
         vals = append(vals, v)
 
     }
-
+    // Adaptation to resolve Huawei bad struct Data.
     if path == "huawei-ifm:ifm/interfaces/interface" {
       if Find(keys, "ifAdminStatus") == -1 {
         keys = append(keys, "ifAdminStatus")
         vals = append(vals, "IfAdminStatus_DOWN")
       }
     }
+    // Adaptation to resolve Huawei bad struct Data.
+    if path == "huawei-ifm:ifm/interfaces/interface/ifDynamicInfo" {
+      if Find(keys, "ifOperStatus") == -1 {
+        keys = append(keys, "ifOperStatus")
+        vals = append(vals, "IfOperStatus_DOWN")
+      }
+    }
 
   return keys, vals
 }
 
-// Find returns the smallest index i at which x == a[i],
-// or len(a) if there is no such index.
+/* Search for a string in a string array.
+  @Params: a String Array
+           x String to Search
+  @Returns: Returns the index location de x in a or -1 if not Found
+*/
 func Find(a []string, x string) int {
     for i, n := range a {
         if x == n {
