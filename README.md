@@ -4,7 +4,7 @@ Este proyecto interpreta los mensajes de telemetria de los routers Huawei NE40E 
 
 ## Sensores de Metricas
 
-```bash
+```
 <Huawei>dis telemetry sensor-path | i Sample
 Info: It will take a long time if the content you search is too much or the string you input is too long, you can press CTRL_C to break.
 Sample(S) : Serial sample.
@@ -20,18 +20,18 @@ Sample(S)   300000         --             huawei-devm:devm/ports/port - Solo dev
 Sample(S)   300000         --             huawei-devm:devm/ports/port/opticalInfo - Probado Ok
 Sample(S)   300000         --             huawei-devm:devm/powerSupplys/powerSupply/powerEnvironments/powerEnvironment - Ok.
 Sample(S)   300000         --             huawei-devm:devm/temperatureInfos/temperatureInfo - Ok
-Sample(P)   300000         --             huawei-emdi:emdi/emdiTelemReps/emdiTelemRep - No Implementado
-Sample(P)   10000          --             huawei-emdi:emdi/emdiTelemRtps/emdiTelemRtp - No Implementado
+Sample(P)   300000         --             huawei-emdi:emdi/emdiTelemReps/emdiTelemRep -
+Sample(P)   10000          --             huawei-emdi:emdi/emdiTelemRtps/emdiTelemRtp -
 Sample(S)   10000          --             huawei-ifm:ifm/interfaces/interface - Solo devuelve AdminStatus si la interface esta UP. Sino solo index
 Sample(P)   100            20             huawei-ifm:ifm/interfaces/interface/ifClearedStat - No Interesa
 Sample(S)   10000          --             huawei-ifm:ifm/interfaces/interface/ifDynamicInfo - Devuelve el estado operativo de la interfaz
 Sample(P)   100            20             huawei-ifm:ifm/interfaces/interface/ifStatistics - Probado ok
 Sample(P)   1000           20             huawei-ifm:ifm/interfaces/interface/ifStatistics/ethPortErrSts - OK
 Sample(S)   10000          --             huawei-mpls:mpls/mplsTe/rsvpTeTunnels/rsvpTeTunnel/tunnelPaths/tunnelPath - No hay RSVP
-Sample(P)   1000           200            huawei-qos:qos/qosBuffers/qosBuffer
-Sample(P)   100            20             huawei-qos:qos/qosIfQoss/qosIfQos/qosPolicyApplys/qosPolicyApply/qosPolicyStats/qosPolicyStat/qosRuleStats/qosRuleStat
+Sample(P)   1000           200            huawei-qos:qos/qosBuffers/qosBuffer - No da Informacion de metricas.
+Sample(P)   100            20             huawei-qos:qos/qosIfQoss/qosIfQos/qosPolicyApplys/qosPolicyApply/qosPolicyStats/qosPolicyStat/qosRuleStats/qosRuleStat Da informacion de buffer por politica por puerto.
 Sample(P)   1000           10             huawei-qos:qos/qosPortQueueStatInfos/qosPortQueueStatInfo - Probado Ok
-Sample(S)   300000         --             huawei-trafficmng:trafficmng/tmSlotSFUs/tmSlotSFU/sfuStatisticss/sfuStatistics No Implementado
+Sample(S)   300000         --             huawei-trafficmng:trafficmng/tmSlotSFUs/tmSlotSFU/sfuStatisticss/sfuStatistics Probado Ok.
 ------------------------------------------------------------------------------------------------------------------
 
 ```

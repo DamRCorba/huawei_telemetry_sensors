@@ -265,9 +265,55 @@ func GetTypeValue (path string) map[string]reflect.Type {
 
   case "huawei-telmEmdi":
   case "huawei-emdi":
+    switch splited[1] {
+    case "emdi/emdiTelemReps/emdiTelemRep":
+      fooType := reflect.TypeOf(huawei_telemEmdi.TelemEmdi_EmdiTelemReps_EmdiTelemRep{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+      break;
+    case "emdi/emdiTelemRtps/emdiTelemRtp":
+      fooType := reflect.TypeOf(huawei_telemEmdi.TelemEmdi_EmdiTelemRtps_EmdiTelemRtp{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+      break;
+    }
     return resolve
 
   case "huawei-trafficmng":
+    switch splited[1] {
+    case "trafficmng/tmSlotSFUs/tmSlotSFU/sfuStatisticss/sfuStatistics":
+      fooType := reflect.TypeOf(huawei_trafficmng.Trafficmng{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+      fooType = reflect.TypeOf(huawei_trafficmng.Trafficmng_TmSlotSFUs{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+      fooType = reflect.TypeOf(huawei_trafficmng.Trafficmng_TmSlotSFUs_TmSlotSFU{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+      fooType = reflect.TypeOf(huawei_trafficmng.Trafficmng_TmSlotSFUs_TmSlotSFU_SfuStatisticss{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+      fooType = reflect.TypeOf(huawei_trafficmng.Trafficmng_TmSlotSFUs_TmSlotSFU_SfuStatisticss_SfuStatistics{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+      break;
+
+    }
     return resolve
 
   default:
