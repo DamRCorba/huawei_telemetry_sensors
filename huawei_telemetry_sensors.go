@@ -171,9 +171,16 @@ func GetTypeValue (path string) map[string]reflect.Type {
     return resolve
 
   case "huawei-ifm":
+    fooType := reflect.TypeOf(huawei_ifm.Ifm_Interfaces_Interface{})
+    for i := 0; i < fooType.NumField(); i ++ {
+      keys := fooType.Field(i)
+      if keys.Name == "IfName" {
+          resolve[LcFirst(keys.Name)] = keys.Type
+          }
+      }
     switch splited[1] {
-    case "ifm/interfaces/interface":
-      fooType := reflect.TypeOf(huawei_ifm.Ifm_Interfaces_Interface{})
+    case "ifm/interfaces/interface": // No trae data mas que IfIndex, IfName e IfAdminStatus_UP si la interface esta Down no devuevle el campo.
+      fooType = reflect.TypeOf(huawei_ifm.Ifm_Interfaces_Interface{})
       for i := 0; i < fooType.NumField(); i ++ {
         keys := fooType.Field(i)
         resolve[LcFirst(keys.Name)] = keys.Type
@@ -356,6 +363,14 @@ func decodeVal(tipo interface{}, val string) interface{} {
 
 */
 func CreateMetrics(grouper *metric.SeriesGrouper, tags map[string]string, timestamp time.Time, path string, subfield string, vals string)  {
+  if path == "huawei-ifm:ifm/interfaces/interface" {
+    if subfield == "ifAdminStatus" {
+      if vals == "IfAdminStatus_UP"
+        grouper.Add(path, tags, timestamp, string(name), 1)
+    } else {
+        grouper.Add(path, tags, timestamp, string(name), 0)
+    }
+  }
   if vals != "" && subfield != "ifName" && subfield != "position" && subfield != "pemIndex" && subfield != "address" && subfield != "i2c" && subfield != "channel" && subfield != "queueType" {
     name:= strings.Replace(subfield,"\"","",-1)
     endPointTypes:=GetTypeValue(path)
@@ -393,7 +408,9 @@ func SearchKey(Message *telemetry.TelemetryRowGPB, sensorType string)  ([]string
   jsonString= strings.Replace(jsonString,"{"," ",-1)
   jsonString= strings.Replace(jsonString,"}","",-1)
   jsonString="\""+jsonString
-
+  fmt.Println("----------------jsonString-----------------")
+  fmt.Println(jsonString)
+  fmt.Println("----------------jsonString-----------------")
   lastQuote := rune(0)
       f := func(c rune) bool {
           switch {
