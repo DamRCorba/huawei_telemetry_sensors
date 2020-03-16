@@ -36,3 +36,18 @@ Sample(S)   300000         --             huawei-trafficmng:trafficmng/tmSlotSFU
 
 ```
 
+### Sensor ISSUE
+
+The NE40-X3/8/16A in VRP V8R10 sends the information of the sensor "huawei-qos:qos/qosPortQueueStatInfos/qosPortQueueStatInfo" misordered. The plugin not correct this input for future compatibility. Thats an ISSUE from Huawei so this is the information needed to use this plugin. Check if your device sends it correctly.
+
+
+| Sensor Queue Indication | Real Queue     |
+| :---------------------- | :------------- |
+| Null                    | BE             |
+| AF2                     | AF1            |
+| AF3                     | AF2            |
+| AF4                     | AF3            |
+| BE                      | AF4            |
+| CS6                     | EF             |
+| CS7                     | CS6            |
+| EF                      | CS7            |

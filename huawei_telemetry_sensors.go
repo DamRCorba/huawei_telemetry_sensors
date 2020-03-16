@@ -6,20 +6,20 @@ import(
       "strings"
       "unicode"
       "strconv"
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-telemetry"  //"telemetry"          // path to huawei-telemetry.proto
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-bfd"        //"huawei_bfd"         // path to huawei-bfd.proto
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-bgp"        //"huawei_bgp"         // path to huawei-bgp.proto
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-devm"       //"huawei_devm"        // path to huawei-devm.proto
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-driver"     //"huawei_driver"      // path to huawei-driver.proto
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-ifm"        //"huawei_ifm"         // path to huawei-ifm.proto
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-isis"       //"huawei_isis"        // path to huawei-isis.proto
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-mpls"       //"huawei_mpls"        // path to huawei-mpls.proto
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-ospfv2"     //"huawei_ospfv2"      // path to huawei-ospfv2.proto
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-ospfv3"     //"huawei_ospfv3"      // path to huawei-ospfv3.proto
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-qos"        //"huawei_qos"         // path to huawei-qos.proto
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-sem"        //"huawei_sem"         // path to huawei-sem.proto
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-telemEmdi"  //"huawei_telemEmdi"   // path to huawei-TelemEmdi.proto
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-trafficmng" //"huawei_trafficmng"  // path to huawei-trafficmng.proto
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-telemetry"
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-bfd"
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-bgp"
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-devm"
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-driver"
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-ifm"
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-isis"
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-mpls"
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-ospfv2"
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-ospfv3"
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-qos"
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-sem"
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-telemEmdi"
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-trafficmng"
       "github.com/golang/protobuf/proto"
       "github.com/influxdata/telegraf/metric"
   )
@@ -30,29 +30,53 @@ import(
   @returns: sensor-path proto message
 */
 func GetMessageType(path string) (proto.Message) {
-  switch path {
+  sensorType := strings.Split(path,":")
+  switch sensorType[0] {
   case "huawei-bfd":
       return &huawei_bfd.Bfd{}
 
   case "huawei-bgp":
+    switch sensorType[1] {
+    case "ESTABLISHED":
+      return &huawei_bgp.ESTABLISHED{}
+    case "BACKWARD":
+      return &huawei_bgp.BACKWARD{}
+    }
     return &huawei_bgp.ESTABLISHED{}
 
   case "huawei-devm":
     return &huawei_devm.Devm{}
 
   case "huawei-driver":
+    switch sensorType[1] {
+    case "hwEntityInvalid":
+        return &huawei_driver.HwEntityInvalid{}
+    case "hwEntityResume":
+        return &huawei_driver.HwEntityResume{}
+    case "hwOpticalInvalid":
+      return &huawei_driver.HwOpticalInvalid{}
+    case "hwOpticalInvalidResume":
+      return &huawei_driver.HwOpticalInvalidResume{}
+    }
     return &huawei_driver.HwEntityInvalid{}
 
   case "huawei-ifm":
     return &huawei_ifm.Ifm{}
 
   case "huawei-isis":
+  case "huawei-isiscomm":
     return &huawei_isiscomm.IsisAdjacencyChange{}
 
   case "huawei-mpls":
     return &huawei_mpls.Mpls{}
 
   case "huawei-ospfv2":
+    switch sensorType[1] {
+    case "ospfNbrStateChange":
+      return &huawei_ospfv2.OspfNbrStateChange{}
+    case "ospfVirtNbrStateChange":
+      return &huawei_ospfv2.OspfVirtNbrStateChange{}
+    }
     return &huawei_ospfv2.OspfNbrStateChange{}
 
   case "huawei-ospfv3":
@@ -62,6 +86,16 @@ func GetMessageType(path string) (proto.Message) {
     return &huawei_qos.Qos{}
 
   case "huawei-sem":
+    switch sensorType[1] {
+    case "hwCPUUtilizationResume":
+      return &huawei_sem.HwStorageUtilizationResume{}
+    case "hwCPUUtilizationRisingAlarm":
+      return &huawei_sem.HwCPUUtilizationRisingAlarm{}
+    case "hwStorageUtilizationResume":
+      return &huawei_sem.HwStorageUtilizationResume{}
+    case "hwStorageUtilizationRisingAlarm":
+      return &huawei_sem.HwStorageUtilizationRisingAlarm{}
+      }
     return &huawei_sem.HwStorageUtilizationResume{}
 
   case "huawei-telmEmdi":
@@ -94,6 +128,23 @@ func GetTypeValue (path string) map[string]reflect.Type {
       return resolve
 
   case "huawei-bgp":
+    switch splited[1] {
+    case "ESTABLISHED":
+      fooType := reflect.TypeOf(huawei_bgp.ESTABLISHED{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+    break;
+    case "BACKWARD":
+      fooType := reflect.TypeOf(huawei_bgp.BACKWARD{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+    break;
+
+    }
     return resolve
 
   case "huawei-devm":
@@ -173,6 +224,53 @@ func GetTypeValue (path string) map[string]reflect.Type {
     return resolve
 
   case "huawei-driver":
+    switch splited[1] {
+    case "hwEntityInvalid":
+      fooType := reflect.TypeOf(huawei_driver.HwEntityInvalid{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        if keys.Name == "I2c" || keys.Name == "Channel" {
+          resolve[LcFirst(keys.Name)] = reflect.TypeOf("")
+        } else {
+          resolve[LcFirst(keys.Name)] = keys.Type
+          }
+        }
+        break;
+    case "hwEntityResume":
+      fooType := reflect.TypeOf(huawei_driver.HwEntityResume{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        if keys.Name == "I2c" || keys.Name == "Channel" {
+          resolve[LcFirst(keys.Name)] = reflect.TypeOf("")
+        } else {
+          resolve[LcFirst(keys.Name)] = keys.Type
+          }
+        }
+        break;
+    case "hwOpticalInvalid":
+      fooType := reflect.TypeOf(huawei_driver.HwOpticalInvalid{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        if keys.Name == "I2c" || keys.Name == "Channel" {
+          resolve[LcFirst(keys.Name)] = reflect.TypeOf("")
+        } else {
+          resolve[LcFirst(keys.Name)] = keys.Type
+          }
+        }
+        break;
+    case "hwOpticalInvalidResume":
+      fooType := reflect.TypeOf(huawei_driver.HwOpticalInvalidResume{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        if keys.Name == "I2c" || keys.Name == "Channel" {
+          resolve[LcFirst(keys.Name)] = reflect.TypeOf("")
+        } else {
+          resolve[LcFirst(keys.Name)] = keys.Type
+          }
+        }
+        break;
+
+    }
     return resolve
 
   case "huawei-ifm":
@@ -221,17 +319,48 @@ func GetTypeValue (path string) map[string]reflect.Type {
         break;
     }
     return resolve
-
+  case "huawei-isiscomm":
   case "huawei-isis":
+    fooType := reflect.TypeOf(huawei_isiscomm.IsisAdjacencyChange{})
+    for i := 0; i < fooType.NumField(); i ++ {
+      keys := fooType.Field(i)
+      resolve[LcFirst(keys.Name)] = keys.Type
+      }
     return resolve
 
   case "huawei-mpls":
+    fooType := reflect.TypeOf(huawei_mpls.Mpls{})
+    for i := 0; i < fooType.NumField(); i ++ {
+      keys := fooType.Field(i)
+      resolve[LcFirst(keys.Name)] = keys.Type
+      }
     return resolve
 
   case "huawei-ospfv2":
+    switch splited[1] {
+    case "ospfNbrStateChange":
+      fooType := reflect.TypeOf(huawei_ospfv2.OspfNbrStateChange{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+      break;
+    case "ospfVirtNbrStateChange":
+      fooType := reflect.TypeOf(huawei_ospfv2.OspfVirtNbrStateChange{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+      break;
+    }
     return resolve
 
   case "huawei-ospfv3":
+    fooType := reflect.TypeOf(huawei_ospfv3.Ospfv3NbrStateChange{})
+    for i := 0; i < fooType.NumField(); i ++ {
+      keys := fooType.Field(i)
+      resolve[LcFirst(keys.Name)] = keys.Type
+      }
     return resolve
 
   case "huawei-qos":
@@ -261,6 +390,36 @@ func GetTypeValue (path string) map[string]reflect.Type {
     return resolve
 
   case "huawei-sem":
+    switch splited[1] {
+    case "hwCPUUtilizationResume":
+      fooType := reflect.TypeOf(huawei_sem.HwStorageUtilizationResume{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    case "hwCPUUtilizationRisingAlarm":
+      fooType := reflect.TypeOf(huawei_sem.HwCPUUtilizationRisingAlarm{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    case "hwStorageUtilizationResume":
+      fooType := reflect.TypeOf(huawei_sem.HwStorageUtilizationResume{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+    case "hwStorageUtilizationRisingAlarm":
+      fooType := reflect.TypeOf(huawei_sem.HwStorageUtilizationRisingAlarm{})
+      for i := 0; i < fooType.NumField(); i ++ {
+        keys := fooType.Field(i)
+        resolve[LcFirst(keys.Name)] = keys.Type
+        }
+        break;
+      }
     return resolve
 
   case "huawei-telmEmdi":
@@ -469,6 +628,9 @@ func SearchKey(Message *telemetry.TelemetryRowGPB, path string)  ([]string, []st
   jsonString= strings.Replace(jsonString,"{"," ",-1)
   jsonString= strings.Replace(jsonString,"}","",-1)
   jsonString="\""+jsonString
+  //fmt.Println("-------------------------jsonString-----------------------")
+  //fmt.Println(jsonString)
+  //fmt.Println("-------------------------jsonString-----------------------")
   if path == "huawei-ifm:ifm/interfaces/interface/ifDynamicInfo" { // caso particular....
     jsonString= strings.Replace(jsonString,"IfOperStatus_UPifName\"","IfOperStatus_UP \"ifName\"",-1)
   }
