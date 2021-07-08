@@ -652,7 +652,7 @@ func SearchKey(Message *telemetry.TelemetryRowGPB, path string)  ([]string, []st
   if path == "huawei-ifm:ifm/interfaces/interface/ifDynamicInfo" { // caso particular....
     jsonString= strings.Replace(jsonString,"IfOperStatus_UPifName\"","IfOperStatus_UP \"ifName\"",-1)
   }
-
+  fmt.Println("-------------------------jsonString-----------------------")
   fmt.Println(jsonString)
   lastQuote := rune(0)
       f := func(c rune) bool {
