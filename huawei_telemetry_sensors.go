@@ -32,6 +32,8 @@ import(
   @returns: sensor-path proto message
 */
 func GetMessageType(path string) (proto.Message) {
+  fmt.Println("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+  fmt.Println(path)
   sensorType := strings.Split(path,":")
   fmt.Println(sensorType)
   switch sensorType[0] {
@@ -110,8 +112,8 @@ func GetMessageType(path string) (proto.Message) {
 
   default:
     fmt.Println("Error Sensor Desconocido")
-    fmt.Println(sensorType)
     fmt.Println("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    fmt.Println(sensorType)
     return &huawei_devm.Devm{}
   }
     return &huawei_devm.Devm{}
