@@ -20,7 +20,7 @@ import(
       "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-sem"
       "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-telemEmdi"
       "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-trafficmng"
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huaweiV8R12-debug"
+     // "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huaweiV8R12-debug"
       
       "github.com/golang/protobuf/proto"
       "github.com/influxdata/telegraf/metric"
