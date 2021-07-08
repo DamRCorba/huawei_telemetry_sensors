@@ -481,7 +481,17 @@ func GetTypeValue (path string) map[string]reflect.Type {
 
     }
     return resolve
-
+    // V8R12 Sensors
+  case "huawei-debug":
+    switch splited[1] {
+    case "debug/cpu-infos/cpu-info":
+          fooType := reflect.TypeOf(huaweiV8R12_debug.Debug_CpuInfos_CpuInfo{})
+          for i := 0; i < fooType.NumField(); i ++ {
+            keys := fooType.Field(i)
+            resolve[LcFirst(keys.Name)] = keys.Type
+            }
+        break;
+        }
   default:
     fmt.Println("Error Sensor Desconocido")
     return resolve
