@@ -20,7 +20,7 @@ import(
       "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-sem"
       "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-telemEmdi"
       "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-trafficmng"
-      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huaweiV8R12-debug"
+      //"github.com/DamRCorba/huawei_telemetry_sensors/sensors/huaweiV8R12-debug"
       
       "github.com/golang/protobuf/proto"
       "github.com/influxdata/telegraf/metric"
@@ -482,7 +482,7 @@ func GetTypeValue (path string) map[string]reflect.Type {
     }
     return resolve
     // V8R12 Sensors
- case "huawei-debug":
+/* case "huawei-debug":
     switch splited[1] {
     case "debug/cpu-infos/cpu-info":
           fooType := reflect.TypeOf(huaweiV8R12_debug.Debug_CpuInfos_CpuInfo{})
@@ -492,7 +492,7 @@ func GetTypeValue (path string) map[string]reflect.Type {
             }
         break;
         }
-    return resolve
+    return resolve*/
   default:
     fmt.Println("Error Sensor Desconocido")
     return resolve
