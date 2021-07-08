@@ -20,6 +20,8 @@ import(
       "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-sem"
       "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-telemEmdi"
       "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huawei-trafficmng"
+      "github.com/DamRCorba/huawei_telemetry_sensors/sensors/huaweiV8R12-debug"
+      
       "github.com/golang/protobuf/proto"
       "github.com/influxdata/telegraf/metric"
   )
@@ -31,6 +33,7 @@ import(
 */
 func GetMessageType(path string) (proto.Message) {
   sensorType := strings.Split(path,":")
+  fmt.Println(sensorType)
   switch sensorType[0] {
   case "huawei-bfd":
       return &huawei_bfd.Bfd{}
@@ -107,6 +110,8 @@ func GetMessageType(path string) (proto.Message) {
 
   default:
     fmt.Println("Error Sensor Desconocido")
+    fmt.Println(sensorType)
+    fmt.Println("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     return &huawei_devm.Devm{}
   }
     return &huawei_devm.Devm{}
